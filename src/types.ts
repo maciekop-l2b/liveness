@@ -1,5 +1,5 @@
 
-export type TransactionType = 'stateUpdate' | 'batchSubmission'
+export type TransactionType = 'state-update' | 'batch-submission'
 
 export type TrackedTransaction = {
   projectId: string
@@ -28,5 +28,5 @@ export type Config = {
 export type Result = {
   projectId: string,
   type: TransactionType,
-  timestamp: Date,
+  timestamp: number,
 }

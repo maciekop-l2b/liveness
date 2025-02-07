@@ -6,7 +6,10 @@ import type { Result } from "./types"
 
 import { WebSocketServer } from 'ws';
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 3001 });
+wss.on('connection', function connection(ws) {
+  console.log('Connection established')
+});
 
 main()
   .catch((e: unknown) => {
@@ -23,10 +26,14 @@ async function main() {
   if (block.number > lastBlock) {
     const results = matchTransactions(block)
     if (results.length > 0) {
-      console.log('Sending results via websocket')
-      wss.on('connection', function connection(ws) {
-        ws.send(JSON.stringify(results));
-      });
+      // biome-ignore lint/complexity/noForEach: <explanation>
+      results.forEach((result) => {
+        // biome-ignore lint/complexity/noForEach: <explanation>
+        wss.clients.forEach((client) => {
+          console.log('Sending result to client')
+          client.send(JSON.stringify(result))
+        })
+      })
     }
   }
 
@@ -47,7 +54,7 @@ function matchTransactions(block: Block): Result[] {
           results.push({
             projectId: trackedTx.projectId,
             type: trackedTx.type,
-            timestamp: new Date(block.timestamp * 1000),
+            timestamp: block.timestamp,
           })
         }
 
@@ -58,7 +65,7 @@ function matchTransactions(block: Block): Result[] {
           results.push({
             projectId: trackedTx.projectId,
             type: trackedTx.type,
-            timestamp: new Date(block.timestamp * 1000),
+            timestamp: block.timestamp,
           })
         }
       }
@@ -77,7 +84,7 @@ function matchTransactions(block: Block): Result[] {
         results.push({
           projectId: project.name,
           type: trackedTx.type,
-          timestamp: new Date(block.timestamp * 1000),
+          timestamp: block.timestamp,
         })
       }
     }
@@ -85,7 +92,7 @@ function matchTransactions(block: Block): Result[] {
 
   // spread transactions evenly across 12s interval
   results.forEach((r, i) => {
-    r.timestamp = new Date(r.timestamp.getTime() + i * 1000)
+    r.timestamp = (r.timestamp + i) * 1000
   })
 
   return results
