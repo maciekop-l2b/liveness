@@ -50,18 +50,18 @@ export const config: Config = {
       selector: "0xe0bc9729",
       functionSignature: "function addSequencerL2Batch(uint256 sequenceNumber,bytes calldata data,uint256 afterDelayedMessagesRead,address gasRefunder,uint256 prevMessageCount,uint256 newMessageCount)"
     },
-    {
-      projectId: 'OrbitStack',
-      type: 'batch-submission',
-      selector: "0x8f111f3c",
-      functionSignature: "function addSequencerL2BatchFromOrigin(uint256 sequenceNumber,bytes data,uint256 afterDelayedMessagesRead,address gasRefunder,uint256 prevMessageCount,uint256 newMessageCount)"
-    },
-    {
-      projectId: 'OrbitStack',
-      type: 'batch-submission',
-      selector: "0x3e5aa082",
-      functionSignature: "function addSequencerL2BatchFromBlobs(uint256 sequenceNumber,uint256 afterDelayedMessagesRead,address gasRefunder,uint256 prevMessageCount,uint256 newMessageCount)"
-    },
+    // {
+    //   projectId: 'OrbitStack',
+    //   type: 'batch-submission',
+    //   selector: "0x8f111f3c",
+    //   functionSignature: "function addSequencerL2BatchFromOrigin(uint256 sequenceNumber,bytes data,uint256 afterDelayedMessagesRead,address gasRefunder,uint256 prevMessageCount,uint256 newMessageCount)"
+    // },
+    // {
+    //   projectId: 'OrbitStack',
+    //   type: 'batch-submission',
+    //   selector: "0x3e5aa082",
+    //   functionSignature: "function addSequencerL2BatchFromBlobs(uint256 sequenceNumber,uint256 afterDelayedMessagesRead,address gasRefunder,uint256 prevMessageCount,uint256 newMessageCount)"
+    // },
     {
       projectId: 'OrbitStack',
       type: 'state-update',
@@ -75,7 +75,7 @@ export const config: Config = {
       addressTo: '0xFf00000000000000000000000000000000008453',
     },
     {
-      projectId: 'state-update',
+      projectId: 'Base',
       type: 'batch-submission',
       addressTo: "0x43edB88C4B80fDD2AdFF2412A7BebF9dF42cB40e",
       selector: "0x82ecf2f6",

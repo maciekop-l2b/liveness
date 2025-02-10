@@ -25,20 +25,22 @@ async function main() {
 
   if (block.number > lastBlock) {
     const results = matchTransactions(block)
-    if (results.length > 0) {
-      // biome-ignore lint/complexity/noForEach: <explanation>
-      results.forEach((result) => {
-        // biome-ignore lint/complexity/noForEach: <explanation>
-        wss.clients.forEach((client) => {
-          console.log('Sending result to client')
-          client.send(JSON.stringify(result))
-        })
-      })
+
+    for (const result of results) {
+      const delay = Math.floor(Math.random() * 4) + 1;
+      result.timestamp = (result.timestamp + delay) * 1000
+      for (const client of wss.clients) {
+        console.log(`Sending result to client with ${delay}s delay`)
+        client.send(JSON.stringify(result))
+      }
+
+      await timeout(delay * 1000)
     }
   }
 
+
   lastBlock = block.number
-  setTimeout(main, 2000);
+  setTimeout(main, 1000);
 }
 
 function matchTransactions(block: Block): Result[] {
@@ -90,10 +92,9 @@ function matchTransactions(block: Block): Result[] {
     }
   }
 
-  // spread transactions evenly across 12s interval
-  results.forEach((r, i) => {
-    r.timestamp = (r.timestamp + i) * 1000
-  })
-
   return results
+}
+
+function timeout(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
